@@ -420,3 +420,6 @@ input,select,textarea{font-size:16px}
 .ib{width:30px;height:30px;flex:0 0 auto}
 .ib svg{width:15px;height:15px}
 .ib .bb{top:-5px;right:-5px;min-width:16px;height:16px;padding:0 4px;font-size:10px;line-height:16px}
+
+/* Marca de agua más notoria (v3.0.11) */
+body::before{background-size:min(88vw,520px);opacity:.18;filter:saturate(1.15) brightness(1.1)}
