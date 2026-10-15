@@ -399,3 +399,18 @@ input,select,textarea{font-size:16px}
 /* Botones de acción: que se ajusten en varias líneas y no se corten (v3.0.6) */
 .row>.acts{flex:1 1 100%;flex-wrap:wrap;gap:8px;min-width:0}
 .row>.acts button{flex:0 0 auto}
+
+/* Campana y centro de notificaciones (v3.0.7) */
+.ib.bell{position:relative}
+.ib .bb{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--bad);color:#fff;font:700 11px/18px system-ui,sans-serif;font-style:normal;text-align:center;box-shadow:0 0 0 2px #0a0a0a}
+.norut{color:var(--bad)!important;font-weight:700}
+.nsec{font-family:Oswald,system-ui,sans-serif;font-size:15px;letter-spacing:.5px;margin:16px 0 8px;color:var(--gold)}
+.nsec.bad{color:var(--bad)}.nsec.warn{color:#f59e0b}.nsec.ok{color:var(--ok)}
+.nitem{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;margin-bottom:8px;border-radius:12px;background:rgba(255,255,255,.04);border-left:4px solid var(--gold)}
+.nitem>div:first-child{flex:1;min-width:140px;display:flex;flex-direction:column}
+.nitem small{color:var(--mut)}
+.nitem.bad{border-left-color:var(--bad);background:rgba(244,63,94,.08)}.nitem.bad small{color:#ff9aa9}
+.nitem.warn{border-left-color:#f59e0b;background:rgba(245,158,11,.08)}
+.nitem.ok{border-left-color:var(--ok)}
+.nitem .acts{display:flex;gap:6px;flex-wrap:wrap}
+.nitem .acts button{background:transparent;color:var(--gold);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:13px;cursor:pointer}
