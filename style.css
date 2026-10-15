@@ -395,3 +395,7 @@ input,select,textarea{font-size:16px}
 /* compartir */
 .spv{display:block;width:100%;max-height:58vh;object-fit:contain;border-radius:14px;margin:10px 0 14px}
 @media(prefers-reduced-motion:reduce){.cs *,.cb i,.nav button.on .ic{animation:none!important}}
+
+/* Botones de acción: que se ajusten en varias líneas y no se corten (v3.0.6) */
+.row>.acts{flex:1 1 100%;flex-wrap:wrap;gap:8px;min-width:0}
+.row>.acts button{flex:0 0 auto}
