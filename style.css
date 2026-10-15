@@ -414,3 +414,9 @@ input,select,textarea{font-size:16px}
 .nitem.ok{border-left-color:var(--ok)}
 .nitem .acts{display:flex;gap:6px;flex-wrap:wrap}
 .nitem .acts button{background:transparent;color:var(--gold);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:13px;cursor:pointer}
+
+/* Iconos de la cabecera más chicos; "Salir" mantiene su tamaño (v3.0.9) */
+.tact{gap:6px}
+.ib{width:30px;height:30px;flex:0 0 auto}
+.ib svg{width:15px;height:15px}
+.ib .bb{top:-5px;right:-5px;min-width:16px;height:16px;padding:0 4px;font-size:10px;line-height:16px}
