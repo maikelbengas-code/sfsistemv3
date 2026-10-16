@@ -423,3 +423,11 @@ input,select,textarea{font-size:16px}
 
 /* Marca de agua más notoria (v3.0.11) */
 body::before{background-size:min(88vw,520px);opacity:.18;filter:saturate(1.15) brightness(1.1)}
+
+/* Video en pantalla completa con botón de cerrar (v3.0.14) */
+#modal.vfull{padding:0;background:#000;align-items:stretch;justify-content:stretch;z-index:60}
+#modal.vfull .vwrap{width:100%;height:100%;display:flex;flex-direction:column;background:#000}
+#modal.vfull .vbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(env(safe-area-inset-top,0px) + 8px) 14px 8px;background:#0a0a0a;border-bottom:1px solid var(--line)}
+#modal.vfull .vbar b{color:#fff;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#modal.vfull .vbar button{flex:0 0 auto;background:var(--gold);color:#111;border:0;border-radius:10px;padding:9px 16px;font-weight:700;font-size:14px;cursor:pointer}
+#modal.vfull iframe{flex:1;width:100%;height:100%;min-height:0;border:0;background:#000}
