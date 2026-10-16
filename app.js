@@ -56,6 +56,7 @@ async function save(){
 const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2300)};
 const lerr=m=>{document.querySelectorAll('.fld').forEach(f=>{f.classList.remove('bad');void f.offsetWidth;f.classList.add('bad')});const e=$('#lerr');e.textContent=m;e.hidden=false};
 const exById=id=>S.ex.find(e=>e.id===id);
+const exFor=(uid,id,day)=>{const e=exById(id);if(!e)return e;const m=S.ov?.[uid]||{},o=m[day+'|'+id]||m[id];return o&&Object.keys(o).length?{...e,...o,_ov:1}:e};
 
 async function init(){
   const defaultData = {
@@ -214,6 +215,9 @@ function remindCheck(first){
     const o={body:nr.slice(0,3).map(u=>u.name.split(' ')[0]).join(', ')+(nr.length>3?'…':'')+' todavía no tiene rutina',icon:'icon-192.png',badge:'icon-192.png',tag:'sf-rutinas'};
     (navigator.serviceWorker?navigator.serviceWorker.getRegistration():Promise.resolve(null)).then(r=>r?r.showNotification('SF Sistem · Alumnos sin rutina',o):new Notification('SF Sistem · Alumnos sin rutina',o)).catch(()=>{})}}
 
+const ovModal=idx=>{const id=(((S.plans[selStu]||{})[DAYS[selDay]]||{}).items||[])[idx],e=exFor(selStu,id,DAYS[selDay]),u=S.users.find(z=>z.id===selStu);if(!e)return;
+  $('#modal').innerHTML=`<div class="card"><h3>Editar para ${esc(u?.name||'alumno')}</h3><small class="lb">Solo se aplica a este alumno y al día ${DAYS[selDay]}. Si el ejercicio está otro día, ahí lo editás aparte. El original en "Ejercicios" no se modifica.</small><input id="o-name" placeholder="Nombre" value="${esc(e.name)}"><div class="g2"><input id="o-sets" placeholder="Series" inputmode="numeric" value="${esc(e.sets)}"><input id="o-reps" placeholder="Repeticiones" value="${esc(e.reps)}"></div><input id="o-note" placeholder="Nota (opcional: RPE, cadencia…)" value="${esc(e.note)}"><textarea id="o-desc" placeholder="Descripción / indicaciones (opcional)">${esc(e.desc)}</textarea><button class="btn" data-a="ovsave" data-v="${id}">Guardar para este alumno</button>${e._ov?`<button class="ghost" style="margin-top:10px" data-a="ovreset" data-v="${id}">Volver al original</button>`:''}<button class="ghost" style="margin-top:10px" data-a="closev">Cancelar</button></div>`;$('#modal').hidden=false};
+
 let gv='bar',gr=6;
 const mTot=k=>(S.pays||[]).filter(p=>(p.date||'').slice(0,7)===k).reduce((a,p)=>a+p.amount,0);
 const fm=n=>n>=1e6?(n/1e6).toFixed(n>=1e7?0:1).replace('.0','')+'M':n>=1e3?Math.round(n/1e3)+'k':''+n;
@@ -264,7 +268,7 @@ const pwModal=id=>{pwId=id;const u=S.users.find(x=>x.id===id);if(!u)return;
   $('#modal').innerHTML=`<div class="card"><h3>Contraseña de ${esc(u.name)}</h3><input id="pw1" type="password" placeholder="Nueva contraseña (mín. 4)" autocomplete="new-password"><input id="pw2" type="password" placeholder="Repetir contraseña" autocomplete="new-password"><label style="display:flex;gap:8px;align-items:center;margin:0 0 12px;color:var(--mut);font-size:14px"><input type="checkbox" data-c="showpw" style="width:auto;margin:0"> Mostrar contraseñas</label><button class="btn" data-a="pwok">Guardar</button><button class="ghost" style="margin-top:10px" data-a="closev">Cancelar</button></div>`;$('#modal').hidden=false};
 const nav=items=>`<div class="nav">${items.map(([k,l])=>`<button class="${tab===k?'on':''}" data-a="tab" data-v="${k}" style="--c:${NC[k]}"><i class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="${ICON[k]}"/></svg></i><span>${l}</span>${bdg(k)}</button>`).join('')}</div>`;
 
-function loginV(){return`<div class="login" style="--img:${IMGS[0]}"><i class="spark s1"></i><i class="spark s2"></i><i class="spark s3"></i><i class="spark s4"></i><i class="spark s5"></i><div class="card login-card lcard"><img src="logo.png" alt="SF Sistem"><div class="coach"><b>Sergio Fernández</b><span>Coach</span></div><h1>Plan <b>personalizado</b></h1><p>Ingresá para ver tu rutina</p><div class="fld"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg><input id="em" placeholder="Usuario o correo" autocapitalize="none" autocomplete="username"></div><div class="fld"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.65 10A5.99 5.99 0 0 0 7 6a6 6 0 0 0 0 12 5.99 5.99 0 0 0 5.65-4H17v4h4v-4h2v-4zM7 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg><input id="pw" type="password" placeholder="Contraseña" autocomplete="current-password"></div><button class="btn shine" data-a="login">Entrar</button><p id="lerr" class="lerr" role="alert" hidden></p></div><small class="ver">SF Sistem · versión 3.0.11</small></div>`}
+function loginV(){return`<div class="login" style="--img:${IMGS[0]}"><i class="spark s1"></i><i class="spark s2"></i><i class="spark s3"></i><i class="spark s4"></i><i class="spark s5"></i><div class="card login-card lcard"><img src="logo.png" alt="SF Sistem"><div class="coach"><b>Sergio Fernández</b><span>Coach</span></div><h1>Plan <b>personalizado</b></h1><p>Ingresá para ver tu rutina</p><div class="fld"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg><input id="em" placeholder="Usuario o correo" autocapitalize="none" autocomplete="username"></div><div class="fld"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.65 10A5.99 5.99 0 0 0 7 6a6 6 0 0 0 0 12 5.99 5.99 0 0 0 5.65-4H17v4h4v-4h2v-4zM7 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg><input id="pw" type="password" placeholder="Contraseña" autocomplete="current-password"></div><button class="btn shine" data-a="login">Entrar</button><p id="lerr" class="lerr" role="alert" hidden></p></div><small class="ver">SF Sistem · versión 3.0.13</small></div>`}
 
 const contactBox=()=>{const c=S.contact||{},ig=igu(c.ig),wa=(c.wa||'').replace(/\D/g,'');return ig||wa?`<div class="cbox"><h3>Contacto</h3><div class="cl">${wa?`<a class="wa" href="https://wa.me/${wa}" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.6 3.6a1 1 0 0 1-.25 1z"/></svg><span>WhatsApp</span></a>`:''}${ig?`<a class="ig" href="https://instagram.com/${ig}" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.3 5.9a1.1 1.1 0 1 1-1.1 1.1 1.1 1.1 0 0 1 1.1-1.1z"/></svg><span>Instagram</span></a>`:''}</div></div>`:''};
 const anim=()=>{const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;document.querySelectorAll('[data-n]').forEach(el=>{const n=+el.dataset.n,sf=el.dataset.s||'',t0=performance.now();if(rm||!n){el.textContent=n+sf;return}const f=t=>{const p=Math.min(1,(t-t0)/1000);el.textContent=Math.round(n*(1-Math.pow(1-p,3)))+sf;if(p<1)requestAnimationFrame(f)};el.textContent='0'+sf;requestAnimationFrame(f)})};
@@ -463,7 +467,7 @@ async function generateBalanceImg(d){
   return new Promise((ok,no)=>cv.toBlob(b=>b?ok(b):no(new Error('blob')),'image/png'))}
 
 const routModal=id=>{const u=S.users.find(z=>z.id===id);if(!u)return;const d=todayIdx();
-  const days=DAYS.map((n,i)=>{const t=planOn(u.id,n),its=(t?.items||[]).map(exById).filter(Boolean);
+  const days=DAYS.map((n,i)=>{const t=planOn(u.id,n),its=(t?.items||[]).map(x=>exFor(u.id,x,n)).filter(Boolean);
     return`<details ${i===d?'open':''}><summary><span>${n}</span><small>${t?esc(t.title)+' · '+its.length+' ejercicios':'Descanso'}</small></summary><div>${byZone(its)||'<div class="empty">'+dbl()+'Sin ejercicios</div>'}</div></details>`}).join('');
   $('#modal').innerHTML=`<div class="card"><h3>Rutina de ${esc(u.name)}</h3><small class="lb">Así la ve el alumno en su semana.</small>${days}<button class="ghost" style="margin-top:10px" data-a="closev">Cerrar</button></div>`;$('#modal').hidden=false};
 
@@ -493,9 +497,9 @@ function studentV(){
   const actU = activeUser(), p=S.plans[actU.id]||{},d=todayIdx();
   let body;
   if(tab==='hoy'){
-    const t=planOn(actU.id,DAYS[d]),items=(t?.items||[]).map(exById).filter(Boolean),ok=(S.done[actU.id]||{})[today()];
+    const t=planOn(actU.id,DAYS[d]),items=(t?.items||[]).map(x=>exFor(actU.id,x,DAYS[d])).filter(Boolean),ok=(S.done[actU.id]||{})[today()];
     body=dailyCard()+(items.length?byZone(items,1)+`<button class="btn ${ok?'done':''}" data-a="fin">${ok?'Rutina terminada':'Marcar como terminada'}</button>`:`<div class="hero"><h2>Día libre</h2></div><div class="empty">${dbl()}Descansar también es entrenar.</div>`);
-  }else if(tab==='progreso')body=calV();else body=`<h2 class="sec">Tu semana</h2>`+DAYS.map((n,i)=>{const t=planOn(actU.id,n),its=(t?.items||[]).map(exById).filter(Boolean);
+  }else if(tab==='progreso')body=calV();else body=`<h2 class="sec">Tu semana</h2>`+DAYS.map((n,i)=>{const t=planOn(actU.id,n),its=(t?.items||[]).map(x=>exFor(actU.id,x,n)).filter(Boolean);
     return`<details class="${i===d?'today':''}" ${i===d?'open':''}><summary><span>${n}</span><small>${t?esc(t.title)+' · '+its.length+' ejercicios':'Descanso'}</small></summary><div>${byZone(its)||'<div class="empty">'+dbl()+'Sin ejercicios</div>'}</div></details>`}).join('');
   return hdr()+`<main id="view">${body}${tab==='progreso'?'':contactBox()}</main>`+nav([['hoy','Hoy'],['semana','Semana'],['progreso','Progreso']]);
 }
@@ -518,7 +522,7 @@ function adminV(){
       <div class="chipbar">${DAYS.map((n,i)=>`<button class="${i===selDay?'on':''}" data-a="day" data-v="${i}">${n.slice(0,3)}${isRest(selStu,n)?' ☾':((S.plans[selStu]||{})[n]?.items?.length?' ●':'')}</button>`).join('')}</div>
       <label class="rest ${isRest(selStu,DAYS[selDay])?'on':''}"><input type="checkbox" data-c="rest" ${isRest(selStu,DAYS[selDay])?'checked':''}> Día de descanso (${DAYS[selDay]})</label>
       <input id="p-title" placeholder="Título del día (ej. Pecho y tríceps)" value="${esc(t.title)}" data-c="title">
-      ${t.items.map((id,i)=>{const e=exById(id);return e?`<div class="row"><div><b>${esc(e.name)}</b><small>${esc(e.zone)} ·${esc(e.sets)}x${esc(e.reps)}</small></div>${vadm(e)}<div class="acts"><button data-a="rm" data-v="${i}">Quitar</button></div></div>`:''}).join('')||'<div class="empty">Sin ejercicios este día.</div>'}
+      ${t.items.map((id,i)=>{const e=exFor(selStu,id,DAYS[selDay]);return e?`<div class="row"><div><b>${esc(e.name)}</b><small>${esc(e.zone)} ·${esc(e.sets)}x${esc(e.reps)}${e.note?' · '+esc(e.note):''}${e._ov?' · <span class="gold">✎ Editado para este alumno (${DAYS[selDay]})</span>':''}</small></div>${vadm(e)}<div class="acts"><button data-a="pedit" data-v="${i}">Editar</button><button data-a="rm" data-v="${i}">Quitar</button></div></div>`:''}).join('')||'<div class="empty">Sin ejercicios este día.</div>'}
       <select data-c="add"><option value="">+ Agregar ejercicio</option>${zs.map(z=>`<optgroup label="${esc(z)}">${S.ex.filter(e=>e.zone===z).map(e=>`<option value="${e.id}">${esc(e.name)}</option>`).join('')}</optgroup>`).join('')}</select>
       <button class="ghost" data-a="clear">Vaciar este día</button>`}
   }
@@ -564,6 +568,13 @@ document.addEventListener('click',async ev=>{
   if(a==='padd'){const n=val('pa-name'),f=Math.round(+val('pa-fee'))||0,d=val('pa-due');if(!n)return toast('Escribí el nombre del alumno');if(f>0&&!d)return toast('Elegí la fecha de vencimiento');
     PS().push({id:Date.now(),name:n,fee:f,due:d,paid:0,active:true});await save();toast('Alumno agregado a pagos');return render()}
   if(a==='pdel'){const u=PS().find(x=>x.id===+v);if(!u||!confirm('¿Quitar a '+u.name+' de la lista de pagos? Sus pagos ya registrados se mantienen.'))return;S.pstu=PS().filter(x=>x.id!==u.id);await save();toast('Alumno quitado de pagos');return render()}
+  if(a==='pedit')return ovModal(+v);
+  if(a==='ovsave'){const id=+v,b0=exById(id);if(!b0)return;const f={name:val('o-name'),sets:val('o-sets'),reps:val('o-reps'),note:val('o-note'),desc:val('o-desc')};
+    if(!f.name)return toast('Poné un nombre');
+    const diff={};for(const k of Object.keys(f))if(String(f[k]||'')!==String(b0[k]||''))diff[k]=f[k];
+    const ov=((S.ov??={})[selStu]??={}),key=DAYS[selDay]+'|'+id;delete ov[id];if(Object.keys(diff).length)ov[key]=diff;else delete ov[key];
+    await save();closeM();toast(Object.keys(diff).length?'Guardado para este alumno ('+DAYS[selDay]+')':'Sin cambios respecto al original');return render()}
+  if(a==='ovreset'){const id=+v;if(S.ov?.[selStu]){delete S.ov[selStu][DAYS[selDay]+'|'+id];delete S.ov[selStu][id]}await save();closeM();toast('Ejercicio restablecido');return render()}
   if(a==='bell')return bellModal();
   if(a==='gorut'){selStu=+v;closeM();tab='planes';return render()}
   if(a==='gopay'){closeM();tab='pagos';return render()}
