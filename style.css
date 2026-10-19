@@ -440,3 +440,29 @@ body::before{background-size:min(88vw,520px);opacity:.18;filter:saturate(1.15) b
 .acc button:first-child{flex:1;text-align:left;padding:11px 14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .acc .x{padding:0 14px;color:var(--mut);border-left:1px solid var(--line)}
 .biobtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:10px;padding:12px}
+
+/* Videos de Instagram / Facebook */
+.vthumb .soc{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:flex-start;padding:6px 8px;font-style:normal;font-family:Oswald,sans-serif;font-size:11px;letter-spacing:.04em;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.vthumb.ig{background:linear-gradient(45deg,#f9a825,#e1306c 55%,#833ab4)}
+.vthumb.fb{background:linear-gradient(135deg,#1877f2,#0b4fb3)}
+.vthumb.big .soc{font-size:14px;padding:10px 12px}
+.vthumb.ig i,.vthumb.fb i{background:#fff}
+#modal.vfull .vbar .vopen{flex:0 0 auto;color:var(--gold2);font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap}
+/* Altura, peso y peso ideal */
+.bodybox select{margin-bottom:10px}
+.bodybox .btn{margin-top:4px}
+.bstats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 10px}
+.bstats div{background:linear-gradient(145deg,#1d1d1d,#111);border:1px solid var(--line);border-radius:16px;padding:12px 8px;text-align:center}
+.bstats small{display:block;color:var(--mut);font-size:12px}
+.bstats b{display:block;font-family:Oswald,sans-serif;font-size:26px;color:var(--gold2);margin:2px 0}
+.bstats em{display:block;font-style:normal;font-size:11px;color:var(--mut)}
+.bnote{margin:6px 0 8px;text-align:center}
+.bnote b{color:var(--gold2)}
+.bhist{display:flex;gap:8px;overflow-x:auto;margin-top:12px;padding-bottom:2px}
+.bhist span{flex:0 0 auto;background:#151515;border:1px solid var(--line);border-radius:12px;padding:6px 10px;text-align:center}
+.bhist small{display:block;color:var(--mut);font-size:11px}
+.bhist b{font-size:14px;color:#fff}
+
+/* Contacto en el inicio de sesión */
+.lcontact{position:relative;z-index:1;width:100%;max-width:380px}
+.lcontact .cbox{margin:0}
