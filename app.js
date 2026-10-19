@@ -43,7 +43,7 @@ const emb=u=>{const k=vkind(u);u=(u||'').trim();
   if(k==='ig'){const m=igm(u);return'https://www.instagram.com/'+(m[1]==='p'?'p':m[1]==='tv'?'tv':'reel')+'/'+m[2]+'/embed/'}
   if(k==='fb')return'https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(u)+'&show_text=false&width=560';
   return''};
-const embPlay=u=>{const k=vkind(u),e=emb(u);return k==='yt'?e+'?autoplay=1&rel=0&playsinline=1&modestbranding=1&fs=1':k==='fb'?e+'&autoplay=true':e};
+const embPlay=u=>{const k=vkind(u),e=emb(u);return k==='yt'?e.replace('www.youtube.com','www.youtube-nocookie.com')+'?autoplay=1&rel=0&playsinline=1&modestbranding=1&fs=1&iv_load_policy=3&cc_load_policy=0':k==='fb'?e+'&autoplay=true&allowfullscreen=true':e};
 const SOCN={ig:'Instagram',fb:'Facebook'};
 const vurl=(e,w)=>w==='F'?e.videoF:e.video;
 const vw=e=>{const p=activeUser()&&activeUser().vid==='F'?'F':'M';return emb(vurl(e,p))?p:(p==='F'?'M':'F')};
@@ -672,7 +672,7 @@ document.addEventListener('click',async ev=>{
   if(a==='deld'){delete S.daily;await save();return render()}
   if(a==='out'){b.classList.add('bye');return setTimeout(()=>{me=null;viewingAsStudent=false;LS.removeItem('sf_me');LS.removeItem('sf_last');render()},380)}
   if(a==='tab'){tab=v;return render()}
-  if(a==='vid'){const e=exById(+v),m=$('#modal'),vu=vurl(e,b.dataset.w)||e.video||e.videoF;m.className='vfull';m.innerHTML=`<div class="vwrap"><div class="vbar"><b>${esc(e.name)}</b>${vkind(vu)==='yt'?'':`<a class="vopen" href="${esc(vu)}" target="_blank" rel="noopener">Abrir en ${SOCN[vkind(vu)]} ↗</a>`}<button data-a="closev" aria-label="Cerrar video">✕ Cerrar</button></div><iframe src="${embPlay(vu)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;m.hidden=false;const rf=m.requestFullscreen||m.webkitRequestFullscreen;if(rf){try{const r=rf.call(m);if(r&&r.catch)r.catch(()=>{})}catch{}}return}
+  if(a==='vid'){const e=exById(+v),m=$('#modal'),vu=vurl(e,b.dataset.w)||e.video||e.videoF;m.className='vfull';m.innerHTML=`<div class="vwrap"><div class="vbar"><span></span>${vkind(vu)==='yt'?'':`<a class="vopen" href="${esc(vu)}" target="_blank" rel="noopener">Abrir en ${SOCN[vkind(vu)]} ↗</a>`}<button data-a="closev" aria-label="Cerrar video">✕ Cerrar</button></div><iframe src="${embPlay(vu)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;m.hidden=false;const rf=m.requestFullscreen||m.webkitRequestFullscreen;if(rf){try{const r=rf.call(m);if(r&&r.catch)r.catch(()=>{})}catch{}}return}
   if(a==='closev'){closeM();return}
   if(a==='fin'){const actU=activeUser(),d=(S.done[actU.id]??={});d[today()]=!d[today()];await save();toast(d[today()]?'¡Buen trabajo!':'Rutina reabierta');return render()}
   if(a==='addu'){const n=val('n-name'),e=val('n-em').toLowerCase(),p=val('n-pw'),r=$('#n-role').value;
